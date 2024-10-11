@@ -8,12 +8,6 @@ public class Player : MonoBehaviour
     [SerializeField] public float walkSpeed = 2f; 
     [SerializeField] public float crouchSpeed = 1; 
 
-
-    [SerializeField] public float dashDistance = 5f;
-    [SerializeField] public float dashCD = 1f;
-    [SerializeField] public float dashSpeed = 10f;
-
-
     [Header("Jump Settings")]
     [SerializeField] public float jumpHeight = 2f;
 

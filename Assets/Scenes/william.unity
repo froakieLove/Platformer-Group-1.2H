@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -696,7 +696,7 @@ GameObject:
   - component: {fileID: 858437755}
   - component: {fileID: 858437754}
   - component: {fileID: 858437753}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plane (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -917,7 +917,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1327593785}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -957,6 +957,7 @@ GameObject:
   - component: {fileID: 1748492406}
   - component: {fileID: 1748492405}
   - component: {fileID: 1748492411}
+  - component: {fileID: 1748492412}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -978,10 +979,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 2
   crouchSpeed: 1
-  jumpForce: 5
+  jumpHeight: 2
   dashDistance: 5
   dashCD: 1
   dashSpeed: 10
+  gravity: -9.81
   checkpointPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1748492406
 MonoBehaviour:
@@ -995,6 +997,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d808dfd9222934e907a096aa8f8d6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGrounded: 0
+  groundCheckLength: 1.1
+  Layer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!136 &1748492407
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1110,6 +1117,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!143 &1748492412
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748492404}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1794853627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,7 +1367,7 @@ GameObject:
   - component: {fileID: 1865930037}
   - component: {fileID: 1865930036}
   - component: {fileID: 1865930035}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1441,7 +1474,7 @@ GameObject:
   - component: {fileID: 1908573351}
   - component: {fileID: 1908573350}
   - component: {fileID: 1908573353}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Big fall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
