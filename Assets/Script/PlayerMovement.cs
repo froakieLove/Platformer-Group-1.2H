@@ -5,18 +5,26 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody rb;
-    private Vector2 inputDirection;
-    private Vector3 dashDirection; 
+    private CharacterController characterController;
+    private Vector2 inputDirection; 
+    private Vector3 dashDirection;
 
     private PlayerInputActions playerInputActions;
     private Player player;
 
     private bool isCrouching = false;
-    private bool canDash = true; 
+    private bool canDash = true;
     private bool isDashing = false;
 
     private float dashTime;
+    private Vector3 velocity; //use to handle the vertical velocity(jump and gravity)
+
+    [SerializeField] private bool isGrounded;
+    [SerializeField] private float groundCheckLength = 1.1f;
+    [SerializeField] private LayerMask Layer;
+
+    private Transform groundCheckPosition;  
+
 
     private void Awake()
     {
@@ -44,33 +52,39 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
+        Layer = LayerMask.GetMask("Ground", "Obstacle");
+
+        // set ground check position
+        groundCheckPosition = transform;
     }
 
-    private  void FixedUpdate()
+    private void Update()
     {
         if (!isDashing)
         {
             Move();
+            ApplyGravity();
         }
-
+        CheckGrounded();
     }
 
     private void Move()
     {
         if (inputDirection.magnitude >= 0.1f)
         {
+            //get the current speed based on player status
             float currentSpeed = isCrouching ? player.crouchSpeed : player.walkSpeed;
             Vector3 moveDirection = transform.forward * inputDirection.y + transform.right * inputDirection.x;
             Vector3 moveVelocity = moveDirection * currentSpeed;
 
-            rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
+            characterController.Move(moveVelocity * Time.deltaTime);
         }
     }
 
     private void StartDashing()
     {
-        if (canDash && inputDirection.magnitude > 0.1f)  // dash only in the movement direction
+        if (canDash && inputDirection.magnitude > 0.1f)// dash only in the movement directio
         {
             isDashing = true;
             canDash = false;
@@ -78,22 +92,20 @@ public class PlayerMovement : MonoBehaviour
             dashDirection = (transform.forward * inputDirection.y + transform.right * inputDirection.x).normalized;
 
             dashTime = player.dashDistance / player.dashSpeed;
-            rb.useGravity = false;
 
             StartCoroutine(PerformDash());
         }
     }
 
-    // Coroutines that execute dash
     private IEnumerator PerformDash()
     {
         float timeElapsed = 0f;
         while (timeElapsed < dashTime)
         {
-            // Update position at sprint speed every frame
-            rb.velocity = dashDirection * player.dashSpeed;
+            Vector3 dashVelocity = dashDirection * player.dashSpeed;
+            characterController.Move(dashVelocity * Time.deltaTime);
             timeElapsed += Time.deltaTime;
-            yield return null;  // wait for next frame
+            yield return null;
         }
 
         StopDashing();
@@ -102,29 +114,44 @@ public class PlayerMovement : MonoBehaviour
     private void StopDashing()
     {
         isDashing = false;
-        rb.useGravity = true; 
-        rb.velocity = Vector3.zero;  
-
+        velocity.y = 0;  
         Invoke(nameof(ResetDash), player.dashCD);
     }
 
     private void ResetDash() => canDash = true;
 
-
     private void Jump()
     {
-        if (!isDashing) 
+        if (isGrounded && !isDashing)
         {
-            rb.AddForce(Vector3.up * player.jumpForce, ForceMode.Impulse);
+            velocity.y = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
         }
     }
 
+    private void ApplyGravity()
+    {
+        if (!isGrounded)
+        {
+            velocity.y += player.gravity * Time.deltaTime ;
+        }
+        else if (velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+
+        characterController.Move(velocity * Time.deltaTime);
+    }
 
     private void StartCrouching() => isCrouching = true;
-    
-
 
     private void StopCrouching() => isCrouching = false;
 
-    
+    private void CheckGrounded()
+    {
+        RaycastHit hit;
+        float rayLength = groundCheckLength + 0.1f;
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
+
+        isGrounded = Physics.Raycast(rayOrigin, Vector3.down, out hit, rayLength, Layer);
+    }
 }
