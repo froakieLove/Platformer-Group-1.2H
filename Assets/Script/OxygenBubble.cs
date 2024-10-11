@@ -10,16 +10,15 @@ public class OxygenBubble : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            //test for is player has collided with the bubble
-            Debug.Log("Player has collided with the bubble");
-
-            OxygenBar oxygenBar = other.gameObject.GetComponent<OxygenBar>();
+            OxygenBar oxygenBar = other.GetComponentInChildren<OxygenBar>();
             if (oxygenBar != null)
             {
-                oxygenBar.AddOxygen(oxygenAmount);
-                Destroy(gameObject); // 捡起后销毁氧气泡泡
+                oxygenBar.AddOxygen(oxygenAmount); // 调用增加氧气的函数
             }
 
+            gameObject.SetActive(false);
         }
+
+      
     }
 }

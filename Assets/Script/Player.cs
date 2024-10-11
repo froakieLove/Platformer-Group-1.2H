@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] public Vector3 checkpointPosition;
 
+    public float dashOxygenCost { get; internal set; }
+
     void Start(){
         checkpointPosition = transform.position;
     }

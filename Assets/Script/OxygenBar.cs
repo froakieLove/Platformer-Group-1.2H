@@ -48,4 +48,10 @@ public class OxygenBar : MonoBehaviour
         currentOxygen -= amount;
         currentOxygen = Mathf.Max(currentOxygen, 0); // 防止氧气量成负
     }
+    public void ConsumeOxygenForDash(float amount)
+    {
+        currentOxygen -= amount;
+        currentOxygen = Mathf.Max(currentOxygen, 0); // 防止氧气值变成负数
+        UpdateOxygenBar();
+    }
 }

@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartDashing()
     {
-        if (canDash && inputDirection.magnitude > 0.1f)// dash only in the movement directio
+        if (canDash && inputDirection.magnitude > 0.1f )// dash only in the movement directio
         {
             isDashing = true;
             canDash = false;
