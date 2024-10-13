@@ -8,6 +8,14 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     void OnTriggerEnter(Collider other){
-        other.GetComponent<Player>().checkpointPosition = transform.position;
+        if (other.CompareTag("Player"))
+        {
+            Player player = other.GetComponent<Player>();
+            if (player != null)
+            {
+                player.checkpointPosition = transform.position;
+            }
+            
+        }
     }
 }

@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public OxygenBar oxygenBar;
+    public float dashOxygenCost = 10f; //Oxygen cost for dash
+
+
     private CharacterController characterController;
     private Vector2 inputDirection; 
     private Vector3 dashDirection;
@@ -84,17 +88,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartDashing()
     {
-        if (canDash && inputDirection.magnitude > 0.1f )// dash only in the movement directio
+        if (oxygenBar == null)
         {
+            Debug.LogError("OxygenBar reference not set on PlayerMovement script.");
+            return;
+        }
+
+        if (canDash && inputDirection.magnitude > 0.1f && oxygenBar.currentOxygen > dashOxygenCost)
+        {
+            oxygenBar.ConsumeOxygenForDash(dashOxygenCost);
+
             isDashing = true;
             canDash = false;
-
             dashDirection = (transform.forward * inputDirection.y + transform.right * inputDirection.x).normalized;
-
             dashTime = player.dashDistance / player.dashSpeed;
 
             StartCoroutine(PerformDash());
         }
+        
     }
 
     private IEnumerator PerformDash()
@@ -154,4 +165,5 @@ public class PlayerMovement : MonoBehaviour
 
         isGrounded = Physics.Raycast(rayOrigin, Vector3.down, out hit, rayLength, Layer);
     }
+
 }

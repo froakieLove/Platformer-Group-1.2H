@@ -5,33 +5,47 @@ using UnityEngine.UI;
 
 public class OxygenBar : MonoBehaviour
 {
-    public Image oxygenBarImage; // 引用UI Image组件
-    public float maxOxygen = 100f; // 最大氧气量
-    public float currentOxygen; // 当前氧气量
-    public float consumptionRate = 1f; // 每秒消耗的氧气量
+    public Image oxygenBarImage; // Get UI compoment
+    public float maxOxygen = 100f; // Max Oxygen
+    public float currentOxygen; // Current Oxygen
+    public float consumptionRate = 1f; // Oxygen cost every second
+    public Player player;
 
     private void Start()
     {
-        currentOxygen = maxOxygen; // 初始时氧气为满
-        oxygenBarImage.fillAmount = 1f; // 设置填充量为满
+        currentOxygen = maxOxygen; //Inital Oxygen as full
+        oxygenBarImage.fillAmount = 1f; 
     }
 
     private void Update()
     {
-        ConsumeOxygen(); // 消耗氧气
-        UpdateOxygenBar(); // 更新氧气条UI
+        ConsumeOxygen(); 
+        UpdateOxygenBar();
+
+        //check is Oxygen run out
+        if (currentOxygen <= 0)
+        {
+            if (player != null)
+            {
+                player.PlayerDie();
+            }
+            else
+            {
+                Debug.LogError("Player reference not set in OxygenBar script.");
+            }
+        }
     }
 
     void ConsumeOxygen()
     {
-        // 每帧消耗一定量的氧气
+        // every fram cost Oxygen
         currentOxygen -= consumptionRate * Time.deltaTime;
-        currentOxygen = Mathf.Max(currentOxygen, 0); // 确保氧气量不低于0
+        currentOxygen = Mathf.Max(currentOxygen, 0); // make sure Oxygen will not go lower then 0
     }
 
     void UpdateOxygenBar()
     {
-        // 更新氧气条的填充量
+        
         oxygenBarImage.fillAmount = currentOxygen / maxOxygen;
     }
 
@@ -42,16 +56,17 @@ public class OxygenBar : MonoBehaviour
         UpdateOxygenBar();
     }
 
-    public void TakeDamage(float amount)
+    public void ReduceOxygen(float amount)
     {
-        // 受到伤害减少氧气
         currentOxygen -= amount;
-        currentOxygen = Mathf.Max(currentOxygen, 0); // 防止氧气量成负
+        currentOxygen = Mathf.Max(currentOxygen, 0);
+        UpdateOxygenBar();
     }
     public void ConsumeOxygenForDash(float amount)
     {
+        //dash cost Oxygen
         currentOxygen -= amount;
-        currentOxygen = Mathf.Max(currentOxygen, 0); // 防止氧气值变成负数
+        currentOxygen = Mathf.Max(currentOxygen, 0);
         UpdateOxygenBar();
     }
 }

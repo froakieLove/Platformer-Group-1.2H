@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dbedba0b01924f4082c1dea00410448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oxygenAmount: 5
+  oxygenAmount: 10
 --- !u!135 &3693342257953989273
 SphereCollider:
   m_ObjectHideFlags: 0

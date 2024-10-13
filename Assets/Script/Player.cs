@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,17 @@ public class Player : MonoBehaviour
     [SerializeField] public Vector3 checkpointPosition;
 
     public float dashOxygenCost { get; internal set; }
+
+    public void PlayerDie()
+    {
+        Debug.Log("Player has died.");
+        Respawn();
+    }
+    public void Respawn()
+    {
+        transform.position = checkpointPosition; // 将玩家移动到检查点位置
+        Debug.Log("Player respawned at " + checkpointPosition);
+    }
 
     void Start(){
         checkpointPosition = transform.position;
