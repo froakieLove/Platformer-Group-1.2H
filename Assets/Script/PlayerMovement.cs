@@ -77,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (inputDirection.magnitude >= 0.1f)
         {
+            Debug.Log("Moving...");
             //get the current speed based on player status
             float currentSpeed = isCrouching ? player.crouchSpeed : player.walkSpeed;
             Vector3 moveDirection = transform.forward * inputDirection.y + transform.right * inputDirection.x;

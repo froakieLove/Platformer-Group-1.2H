@@ -27,7 +27,7 @@ public class OxygenBar : MonoBehaviour
         {
             if (player != null)
             {
-                player.PlayerDie();
+                player.Death();
             }
             else
             {
@@ -68,5 +68,10 @@ public class OxygenBar : MonoBehaviour
         currentOxygen -= amount;
         currentOxygen = Mathf.Max(currentOxygen, 0);
         UpdateOxygenBar();
+    }
+    public void ResetOxygen()
+    {
+        currentOxygen = maxOxygen;
+        UpdateOxygenBar(); 
     }
 }

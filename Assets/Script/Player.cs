@@ -25,19 +25,30 @@ public class Player : MonoBehaviour
 
     public float dashOxygenCost { get; internal set; }
 
-    public void PlayerDie()
+
+    void Start()
+    {
+        checkpointPosition = transform.position;
+    }
+
+    public void Death()
     {
         Debug.Log("Player has died.");
+
         Respawn();
     }
     public void Respawn()
     {
-        transform.position = checkpointPosition; // 将玩家移动到检查点位置
-        Debug.Log("Player respawned at " + checkpointPosition);
+        Debug.Log("Respawning Player and reset OxygenBar");
+        Invoke(nameof(ResetOxygenAfterDelay), 1f);
     }
-
-    void Start(){
-        checkpointPosition = transform.position;
+    private void ResetOxygenAfterDelay()
+    {
+        OxygenBar oxygenBar = GetComponentInChildren<OxygenBar>();
+        if (oxygenBar != null)
+        {
+            oxygenBar.ResetOxygen();
+        }
     }
 }
 

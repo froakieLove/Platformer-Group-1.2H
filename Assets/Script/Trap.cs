@@ -5,15 +5,19 @@ using UnityEngine;
 public class Trap : MonoBehaviour
 {
     public float oxygenCost = 10f;
+    public float reduceFrequency = 1f;
 
-    private void OnTriggerEnter(Collider other)
+    private float nextReduceTime = 0;
+
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && Time.time >= nextReduceTime)
         {
             OxygenBar oxygenBar = other.GetComponentInChildren<OxygenBar>();
             if (oxygenBar != null)
             {
                 oxygenBar.ReduceOxygen(oxygenCost);
+                nextReduceTime = Time.time + reduceFrequency;  // update the time of cost oxygen
             }
         }
     }
