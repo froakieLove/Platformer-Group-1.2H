@@ -5,9 +5,14 @@ using UnityEngine;
     // Attach script to gameObject that will kill the player
     // Make sure gameObject has a collider component and isTrigger true
 
-public class killPlayer : MonoBehaviour
+public class KillPlayer : MonoBehaviour
 {
-    void OnTriggerEnter(Collider other){
-        other.GetComponent<Transform>().position = other.GetComponent<Player>().checkpointPosition;
+    void OnTriggerEnter(Collider other)
+    {
+        CharacterController characterController = other.GetComponent<CharacterController>();
+        characterController.enabled = false;
+        other.GetComponent<Transform>().position = other.GetComponent<PlayerMovement>().checkpointPosition;
+        characterController.enabled = true;
     }
 }
+

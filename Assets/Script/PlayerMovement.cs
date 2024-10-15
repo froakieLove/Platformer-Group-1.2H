@@ -23,13 +23,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundCheckLength = 1.1f;
     [SerializeField] private LayerMask Layer;
 
-    private Transform groundCheckPosition;  
+    private Transform groundCheckPosition;
 
+    public Vector3 checkpointPosition;
 
     private void Awake()
     {
         playerInputActions = new PlayerInputActions();
         player = GetComponent<Player>();
+        checkpointPosition = transform.position;
     }
 
     private void OnEnable()

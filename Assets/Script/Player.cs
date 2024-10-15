@@ -17,13 +17,6 @@ public class Player : MonoBehaviour
     [SerializeField] public float dashSpeed = 10f;   
 
     [Header("Gravity Settings")]
-    [SerializeField] public float gravity = -9.81f;  
-
-
-    [SerializeField] public Vector3 checkpointPosition;
-
-    void Start(){
-        checkpointPosition = transform.position;
-    }
+    [SerializeField] public float gravity = -9.81f; 
 }
 
