@@ -36,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
     private float xRotation = 0f; // Control up down rotation
     private bool canLook = false;
 
-    private Transform groundCheckPosition;
 
     private void Awake()
     {

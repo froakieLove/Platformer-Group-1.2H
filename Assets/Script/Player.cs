@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,37 @@ public class Player : MonoBehaviour
     [SerializeField] public float dashSpeed = 10f;   
 
     [Header("Gravity Settings")]
-    [SerializeField] public float gravity = -9.81f; 
+    [SerializeField] public float gravity = -9.81f;  
+
+
+    [SerializeField] public Vector3 checkpointPosition;
+
+    public float dashOxygenCost { get; internal set; }
+
+
+    void Start()
+    {
+        checkpointPosition = transform.position;
+    }
+
+    public void Death()
+    {
+        Debug.Log("Player has died.");
+
+        Respawn();
+    }
+    public void Respawn()
+    {
+        Debug.Log("Respawning Player and reset OxygenBar");
+        Invoke(nameof(ResetOxygenAfterDelay), 1f);
+    }
+    private void ResetOxygenAfterDelay()
+    {
+        OxygenBar oxygenBar = GetComponentInChildren<OxygenBar>();
+        if (oxygenBar != null)
+        {
+            oxygenBar.ResetOxygen();
+        }
+    }
 }
 
