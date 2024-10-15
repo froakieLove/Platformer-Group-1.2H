@@ -26,6 +26,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundCheckLength = 1.1f;
     [SerializeField] private LayerMask Layer;
 
+    private Transform groundCheckPosition;
+
+    public Vector3 checkpointPosition;
     [SerializeField] private float mouseSensitivity = 10f;
     [SerializeField] private Transform cameraTransfrom; 
     [SerializeField] private Transform playerBody; 
@@ -39,9 +42,9 @@ public class PlayerMovement : MonoBehaviour
     {
         playerInputActions = new PlayerInputActions();
         player = GetComponent<Player>();
+        checkpointPosition = transform.position;
         cameraTransfrom = GetComponentInChildren<Camera>().transform;
         characterController = GetComponent<CharacterController>();
-
     }
 
     private void OnEnable()
