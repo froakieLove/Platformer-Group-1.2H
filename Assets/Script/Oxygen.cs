@@ -1,28 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro; 
 
-public class OxygenBar : MonoBehaviour
+public class Oxygen : MonoBehaviour
 {
-    public Image oxygenBarImage; // Get UI compoment
     public float maxOxygen = 100f; // Max Oxygen
     public float currentOxygen; // Current Oxygen
     public float consumptionRate = 1f; // Oxygen cost every second
     public Player player;
 
+    private TextMeshProUGUI oxygenText; 
+
     private void Start()
     {
-        currentOxygen = maxOxygen; //Inital Oxygen as full
-        oxygenBarImage.fillAmount = 1f; 
+        currentOxygen = maxOxygen; // Initial Oxygen as full
+        player = GetComponent<Player>();
+
+        oxygenText = GameObject.Find("OxygenText").GetComponent<TextMeshProUGUI>();
     }
 
     private void Update()
     {
-        ConsumeOxygen(); 
-        UpdateOxygenBar();
+        ConsumeOxygen();
 
-        //check is Oxygen run out
+        UpdateOxygenUI();
+
+        // Check if Oxygen runs out
         if (currentOxygen <= 0)
         {
             if (player != null)
@@ -38,40 +42,43 @@ public class OxygenBar : MonoBehaviour
 
     void ConsumeOxygen()
     {
-        // every fram cost Oxygen
+        // Reduce oxygen every frame
         currentOxygen -= consumptionRate * Time.deltaTime;
-        currentOxygen = Mathf.Max(currentOxygen, 0); // make sure Oxygen will not go lower then 0
-    }
-
-    void UpdateOxygenBar()
-    {
-        
-        oxygenBarImage.fillAmount = currentOxygen / maxOxygen;
+        currentOxygen = Mathf.Max(currentOxygen, 0); // Ensure oxygen doesn't go below 0
     }
 
     public void AddOxygen(float amount)
     {
         currentOxygen += amount;
         currentOxygen = Mathf.Min(currentOxygen, maxOxygen);
-        UpdateOxygenBar();
     }
 
     public void ReduceOxygen(float amount)
     {
         currentOxygen -= amount;
         currentOxygen = Mathf.Max(currentOxygen, 0);
-        UpdateOxygenBar();
     }
+
     public void ConsumeOxygenForDash(float amount)
     {
-        //dash cost Oxygen
+        // Dash costs oxygen
         currentOxygen -= amount;
         currentOxygen = Mathf.Max(currentOxygen, 0);
-        UpdateOxygenBar();
     }
+
     public void ResetOxygen()
     {
         currentOxygen = maxOxygen;
-        UpdateOxygenBar(); 
+    }
+
+    //Temporary Oxygen UI
+    private void UpdateOxygenUI()
+    {
+
+        if (oxygenText != null)
+        {
+
+            oxygenText.text = "Oxygen: " + Mathf.RoundToInt(currentOxygen).ToString();
+        }
     }
 }

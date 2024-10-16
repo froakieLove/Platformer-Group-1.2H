@@ -13,7 +13,7 @@ public class Trap : MonoBehaviour
     {
         if (other.CompareTag("Player") && Time.time >= nextReduceTime)
         {
-            OxygenBar oxygenBar = other.GetComponentInChildren<OxygenBar>();
+            Oxygen oxygenBar = other.GetComponentInChildren<Oxygen>();
             if (oxygenBar != null)
             {
                 oxygenBar.ReduceOxygen(oxygenCost);

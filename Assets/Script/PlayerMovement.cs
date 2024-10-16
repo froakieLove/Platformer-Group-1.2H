@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController characterController;
     private PlayerInputActions playerInputActions;
+    private Oxygen oxygen;
 
     private Player player;
 
@@ -15,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isCrouching = false;
     private bool canDash = true;
     private bool isDashing = false;
+    [SerializeField] private float dashCost = 10;
     private float dashTime;
     private Vector3 velocity;//Used to control jumping
 
@@ -22,9 +24,6 @@ public class PlayerMovement : MonoBehaviour
     private float defaultHeight; 
     private Vector3 defaultCenter; 
 
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private float groundCheckLength = 1.1f;
-    [SerializeField] private LayerMask Layer;
 
     private Transform groundCheckPosition;
 
@@ -39,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        oxygen = GetComponent<Oxygen>();
         playerInputActions = new PlayerInputActions();
         player = GetComponent<Player>();
         checkpointPosition = transform.position;
@@ -66,7 +66,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        Layer = LayerMask.GetMask("Ground", "Obstacle");
 
         groundCheckPosition = transform;
         SetDefualtCllisionBoxInfo();
@@ -80,7 +79,6 @@ public class PlayerMovement : MonoBehaviour
             Move();
             ApplyGravity();
         }
-        CheckGrounded();
         MouseLook(); 
     }
 
@@ -143,6 +141,8 @@ public class PlayerMovement : MonoBehaviour
 
             dashTime = player.dashDistance / player.dashSpeed;
 
+            
+
             StartCoroutine(PerformDash());
         }
     }
@@ -165,13 +165,14 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = false;
         velocity.y = 0;
+        oxygen.ConsumeOxygenForDash(dashCost);
         Invoke(nameof(ResetDash), player.dashCD);
     }
     private void ResetDash() => canDash = true;
 
     private void Jump()
     {
-        if (isGrounded && !isDashing)
+        if (characterController.isGrounded && !isDashing)
         {
             velocity.y = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
         }
@@ -179,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyGravity()
     {
-        if (!isGrounded)
+        if (!characterController.isGrounded)
         {
             velocity.y += player.gravity * Time.deltaTime;
         }
@@ -191,15 +192,7 @@ public class PlayerMovement : MonoBehaviour
         characterController.Move(velocity * Time.deltaTime);
     }
 
-    private void CheckGrounded()
-    {
-        RaycastHit hit;
-        float rayLength = groundCheckLength + 0.1f;
-        Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
-
-        isGrounded = Physics.Raycast(rayOrigin, Vector3.down, out hit, rayLength, Layer);
-    }
-
+ 
     private void CameraInitialSetup()
     {
         Cursor.lockState = CursorLockMode.Locked; // Lock the mouse pointer

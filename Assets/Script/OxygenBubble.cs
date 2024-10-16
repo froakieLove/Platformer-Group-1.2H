@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class OxygenBubble : MonoBehaviour
 {
-    public float oxygenAmount = 10f; // 添加到氧气条的氧气量
+    public float oxygenAmount = 10f; 
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            OxygenBar oxygenBar = other.GetComponentInChildren<OxygenBar>();
+            Oxygen oxygenBar = other.GetComponentInChildren<Oxygen>();
             if (oxygenBar != null)
             {
-                oxygenBar.AddOxygen(oxygenAmount); // 调用增加氧气的函数
+                oxygenBar.AddOxygen(oxygenAmount); 
             }
 
             gameObject.SetActive(false);
