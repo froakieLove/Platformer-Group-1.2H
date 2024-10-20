@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -36,11 +37,23 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        
+        if (transform.position.y < -10)
+        {
+            Death();
+        }
+    }
+
     public void Death()
     {
         Debug.Log("Player has died.");
 
         transform.position = checkpointPosition;
+
+        //Reload the current scene£¨will delete later£©
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
         FreezePlayer();
 
