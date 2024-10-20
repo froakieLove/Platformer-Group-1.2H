@@ -44,6 +44,12 @@ public class Player : MonoBehaviour
         {
             Death();
         }
+
+        //Reload the current scene£¨will delete later£©
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     public void Death()
@@ -52,8 +58,7 @@ public class Player : MonoBehaviour
 
         transform.position = checkpointPosition;
 
-        //Reload the current scene£¨will delete later£©
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        
 
         FreezePlayer();
 
