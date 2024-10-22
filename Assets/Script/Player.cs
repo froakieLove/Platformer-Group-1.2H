@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     [SerializeField] public float gravity = -9.81f;
 
     [SerializeField] public Vector3 checkpointPosition;
+    [SerializeField] private float deathnHight = 45;
 
     public float dashOxygenCost { get; internal set; }
 
@@ -39,8 +40,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        
-        if (transform.position.y < -10)
+        //die when fall off the map
+        if (transform.position.y < deathnHight)
         {
             Death();
         }
