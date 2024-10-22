@@ -7,11 +7,14 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController characterController;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private Vector2 inputDirection; 
     private Vector3 dashDirection;
 
 =======
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+=======
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
     private PlayerInputActions playerInputActions;
     private Oxygen oxygen;
 
@@ -25,12 +28,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashCost = 10;
     private float dashTime;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private Vector3 velocity; //use to handle the vertical velocity(jump and gravity)
+=======
+    private Vector3 velocity;//Used to control jumping
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
 
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private float groundCheckLength = 1.1f;
-    [SerializeField] private LayerMask Layer;
+    [SerializeField] private float crouchHeightMultiplier = 0.5f; 
+    private float defaultHeight; 
+    private Vector3 defaultCenter; 
 
+<<<<<<< HEAD
     private Transform groundCheckPosition;  
 =======
     private Vector3 velocity;//Used to control jumping
@@ -39,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
     private float defaultHeight; 
     private Vector3 defaultCenter; 
 
+=======
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
 
     private Transform groundCheckPosition;
 
@@ -49,7 +59,10 @@ public class PlayerMovement : MonoBehaviour
 
     private float xRotation = 0f; // Control up down rotation
     private bool canLook = false;
+<<<<<<< HEAD
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+=======
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
 
 
     private void Awake()
@@ -83,17 +96,24 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         characterController = GetComponent<CharacterController>();
         Layer = LayerMask.GetMask("Ground", "Obstacle");
+=======
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
 
-        // set ground check position
         groundCheckPosition = transform;
+<<<<<<< HEAD
 =======
 
         groundCheckPosition = transform;
         SetDefualtCllisionBoxInfo();
         CameraInitialSetup();
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+=======
+        SetDefualtCllisionBoxInfo();
+        CameraInitialSetup();
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
     }
 
     private void Update()
@@ -104,10 +124,14 @@ public class PlayerMovement : MonoBehaviour
             ApplyGravity();
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         CheckGrounded();
 =======
         MouseLook(); 
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+=======
+        MouseLook(); 
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
     }
 
     private void MouseLook()
@@ -130,7 +154,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (inputDirection.magnitude >= 0.1f)
         {
-            //get the current speed based on player status
             float currentSpeed = isCrouching ? player.crouchSpeed : player.walkSpeed;
             Vector3 moveDirection = transform.forward * inputDirection.y + transform.right * inputDirection.x;
             Vector3 moveVelocity = moveDirection * currentSpeed;
@@ -162,10 +185,14 @@ public class PlayerMovement : MonoBehaviour
     private void StartDashing()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (canDash && inputDirection.magnitude > 0.1f)// dash only in the movement directio
 =======
         if (canDash && inputDirection.magnitude > 0.1f)
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+=======
+        if (canDash && inputDirection.magnitude > 0.1f)
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
         {
             isDashing = true;
             canDash = false;
@@ -178,6 +205,8 @@ public class PlayerMovement : MonoBehaviour
 
             
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+
+            
 
             StartCoroutine(PerformDash());
         }
@@ -201,11 +230,16 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = false;
 <<<<<<< HEAD
+<<<<<<< HEAD
         velocity.y = 0;  
 =======
         velocity.y = 0;
         oxygen.ConsumeOxygenForDash(dashCost);
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+=======
+        velocity.y = 0;
+        oxygen.ConsumeOxygenForDash(dashCost);
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
         Invoke(nameof(ResetDash), player.dashCD);
     }
     private void ResetDash() => canDash = true;
@@ -213,10 +247,14 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (isGrounded && !isDashing)
 =======
         if (characterController.isGrounded && !isDashing)
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+=======
+        if (characterController.isGrounded && !isDashing)
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
         {
             velocity.y = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
         }
@@ -224,6 +262,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyGravity()
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
         if (!isGrounded)
         {
@@ -233,6 +272,11 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y += player.gravity * Time.deltaTime;
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+=======
+        if (!characterController.isGrounded)
+        {
+            velocity.y += player.gravity * Time.deltaTime;
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
         }
         else if (velocity.y < 0)
         {
@@ -243,6 +287,7 @@ public class PlayerMovement : MonoBehaviour
         characterController.Move(velocity * Time.deltaTime);
     }
 
+<<<<<<< HEAD
     private void StartCrouching() => isCrouching = true;
 =======
 
@@ -261,19 +306,31 @@ public class PlayerMovement : MonoBehaviour
 
 <<<<<<< HEAD
     private void CheckGrounded()
+=======
+ 
+    private void CameraInitialSetup()
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
     {
-        RaycastHit hit;
-        float rayLength = groundCheckLength + 0.1f;
-        Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
+        Cursor.lockState = CursorLockMode.Locked; // Lock the mouse pointer
+        Cursor.visible = false;
 
+<<<<<<< HEAD
         isGrounded = Physics.Raycast(rayOrigin, Vector3.down, out hit, rayLength, Layer);
 =======
+=======
+        xRotation = 0f;
+        cameraTransfrom.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
         Invoke(nameof(EnableLook), 0.2f);
     }
     private void SetDefualtCllisionBoxInfo()
     {
         defaultHeight = characterController.height;
         defaultCenter = characterController.center;
+<<<<<<< HEAD
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
+=======
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
     }
 }

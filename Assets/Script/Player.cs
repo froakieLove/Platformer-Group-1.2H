@@ -6,18 +6,24 @@ public class Player : MonoBehaviour
 {
     [Header("Movement Settings")]
 <<<<<<< HEAD
+<<<<<<< HEAD
     [SerializeField] public float walkSpeed = 2f; 
     [SerializeField] public float crouchSpeed = 1; 
+=======
+    [SerializeField] public float walkSpeed = 2f;
+    [SerializeField] public float crouchSpeed = 1f;
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
 
     [Header("Jump Settings")]
-    [SerializeField] public float jumpHeight = 2f;
+    [SerializeField] public float jumpHeight = 1f;
 
     [Header("Dash Settings")]
-    [SerializeField] public float dashDistance = 5f; 
-    [SerializeField] public float dashCD = 1;       
-    [SerializeField] public float dashSpeed = 10f;   
+    [SerializeField] public float dashDistance = 5f;
+    [SerializeField] public float dashCD = 1f;
+    [SerializeField] public float dashSpeed = 10f;
 
     [Header("Gravity Settings")]
+<<<<<<< HEAD
     [SerializeField] public float gravity = -9.81f;  
 
 =======
@@ -34,6 +40,8 @@ public class Player : MonoBehaviour
 >>>>>>> 3a03f53c2d2274ed749dafc316ef509e408a347b
 
     [Header("Gravity Settings")]
+=======
+>>>>>>> eb0238db4ee4838792c557307acf49021f5f25ab
     [SerializeField] public float gravity = -9.81f;
 
     [SerializeField] public Vector3 checkpointPosition;
