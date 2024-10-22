@@ -13,7 +13,7 @@
   
 ## Objectives
 - Navigate the underwater world.
-- Keep an eye on your oxygen level as it leaks over time.
+- Keep an eye on your oxygen level as it leaks over time. Dashing consumes 10 oxygen.
 - Blue oxygen pickups add 10 oxygen. Maintain your oxygen level to finish the level.
 - Red traps will decrease your oxygen by 10 if you come into contact with them.
 - Yellow checkpoints beams throughout the level save your progress.
