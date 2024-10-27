@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         groundCheckPosition = transform;
-        SetDefualtCllisionBoxInfo();
+        SetDefaultCollisionBoxInfo();
         CameraInitialSetup();
     }
 
@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
 
         Invoke(nameof(EnableLook), 0.2f);
     }
-    private void SetDefualtCllisionBoxInfo()
+    private void SetDefaultCollisionBoxInfo()
     {
         defaultHeight = characterController.height;
         defaultCenter = characterController.center;
