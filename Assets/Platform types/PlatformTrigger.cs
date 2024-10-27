@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlatformTrigger : MonoBehaviour
 {
-
     public Platform platform;
 
     void OnTriggerEnter(Collider other){

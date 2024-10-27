@@ -185,7 +185,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18cf31f338260d4f91383725784e21b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disappearDelay: 0.5
+  platformType: 0
+  activationDelay: 0.5
+  sinkSpeed: 3
 --- !u!1 &7809623204751060464
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,7 +198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 468039638845854640}
   m_Layer: 0
-  m_Name: OneTime
+  m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
