@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController characterController;
     private PlayerInputActions playerInputActions;
+    private Animator animator;
     private Oxygen oxygen;
 
     private Player player;
@@ -18,23 +19,23 @@ public class PlayerMovement : MonoBehaviour
     private bool isDashing = false;
     [SerializeField] private float dashCost = 10;
     private float dashTime;
-    private Vector3 velocity;//Used to control jumping
+    private Vector3 velocity; // 用于控制跳跃
 
-    [SerializeField] private float crouchHeightMultiplier = 0.5f; 
-    private float defaultHeight; 
-    private Vector3 defaultCenter; 
-
+    [SerializeField] private float crouchHeightMultiplier = 0.5f; // 调整 crouch 高度的倍率
+    [SerializeField] private float speedReduction = 0.5f; // 速度减少的倍率
+    private float defaultHeight;
+    private Vector3 defaultCenter;
+    private Vector3 originalScale; // 记录初始的缩放比例
 
     private Transform groundCheckPosition;
 
     public Vector3 checkpointPosition;
     [SerializeField] private float mouseSensitivity = 10f;
-    [SerializeField] private Transform cameraTransfrom; 
-    [SerializeField] private Transform playerBody; 
+    [SerializeField] private Transform cameraTransfrom;
+    [SerializeField] private Transform playerBody;
 
-    private float xRotation = 0f; // Control up down rotation
+    private float xRotation = 0f; // 控制上下旋转
     private bool canLook = false;
-
 
     private void Awake()
     {
@@ -44,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
         checkpointPosition = transform.position;
         cameraTransfrom = GetComponentInChildren<Camera>().transform;
         characterController = GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
+        originalScale = transform.localScale; // 保存原始比例
     }
 
     private void OnEnable()
@@ -66,7 +69,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-
         groundCheckPosition = transform;
         SetDefaultCollisionBoxInfo();
         CameraInitialSetup();
@@ -79,7 +81,14 @@ public class PlayerMovement : MonoBehaviour
             Move();
             ApplyGravity();
         }
-        MouseLook(); 
+        MouseLook();
+        UpdateAnimatorParameters();
+    }
+
+    private void UpdateAnimatorParameters()
+    {
+        animator.SetFloat("xVelocity", inputDirection.x);
+        animator.SetFloat("zVelocity", inputDirection.y);
     }
 
     private void MouseLook()
@@ -90,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         float mouseY = playerInputActions.Player.Look.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        xRotation = Mathf.Clamp(xRotation, -55f, 55f);
 
         cameraTransfrom.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         playerBody.Rotate(Vector3.up * mouseX);
@@ -102,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (inputDirection.magnitude >= 0.1f)
         {
-            float currentSpeed = isCrouching ? player.crouchSpeed : player.walkSpeed;
+            float currentSpeed = isCrouching ? player.crouchSpeed * speedReduction : player.walkSpeed;
             Vector3 moveDirection = transform.forward * inputDirection.y + transform.right * inputDirection.x;
             Vector3 moveVelocity = moveDirection * currentSpeed;
 
@@ -117,9 +126,10 @@ public class PlayerMovement : MonoBehaviour
         float crouchHeight = defaultHeight * crouchHeightMultiplier;
         Vector3 crouchCenter = defaultCenter * crouchHeightMultiplier;
 
-
         characterController.height = crouchHeight;
-        characterController.center = crouchCenter;
+        characterController.center = defaultCenter;
+        transform.localScale = new Vector3(originalScale.x, crouchHeightMultiplier, originalScale.z); // 修改缩放比例
+        animator.SetBool("Crouch", true);
     }
 
     private void StopCrouching()
@@ -128,6 +138,8 @@ public class PlayerMovement : MonoBehaviour
 
         characterController.height = defaultHeight;
         characterController.center = defaultCenter;
+        transform.localScale = originalScale; // 恢复到原始比例
+        animator.SetBool("Crouch", false);
     }
 
     private void StartDashing()
@@ -140,8 +152,6 @@ public class PlayerMovement : MonoBehaviour
             dashDirection = (transform.forward * inputDirection.y + transform.right * inputDirection.x).normalized;
 
             dashTime = player.dashDistance / player.dashSpeed;
-
-            
 
             StartCoroutine(PerformDash());
         }
@@ -168,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
         oxygen.ConsumeOxygenForDash(dashCost);
         Invoke(nameof(ResetDash), player.dashCD);
     }
+
     private void ResetDash() => canDash = true;
 
     private void Jump()
@@ -175,6 +186,7 @@ public class PlayerMovement : MonoBehaviour
         if (characterController.isGrounded && !isDashing)
         {
             velocity.y = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
+            animator.SetBool("Jump", true);
         }
     }
 
@@ -187,15 +199,15 @@ public class PlayerMovement : MonoBehaviour
         else if (velocity.y < 0)
         {
             velocity.y = -2f;
+            animator.SetBool("Jump", false);
         }
 
         characterController.Move(velocity * Time.deltaTime);
     }
 
- 
     private void CameraInitialSetup()
     {
-        Cursor.lockState = CursorLockMode.Locked; // Lock the mouse pointer
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         xRotation = 0f;
@@ -203,6 +215,7 @@ public class PlayerMovement : MonoBehaviour
 
         Invoke(nameof(EnableLook), 0.2f);
     }
+
     private void SetDefaultCollisionBoxInfo()
     {
         defaultHeight = characterController.height;
