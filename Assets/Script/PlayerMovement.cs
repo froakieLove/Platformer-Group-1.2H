@@ -19,13 +19,13 @@ public class PlayerMovement : MonoBehaviour
     private bool isDashing = false;
     [SerializeField] private float dashCost = 10;
     private float dashTime;
-    private Vector3 velocity; // 用于控制跳跃
+    private Vector3 velocity; // use to control jump height
 
-    [SerializeField] private float crouchHeightMultiplier = 0.5f; // 调整 crouch 高度的倍率
-    [SerializeField] private float speedReduction = 0.5f; // 速度减少的倍率
+    [SerializeField] private float crouchHeightMultiplier = 0.5f; 
+    [SerializeField] private float speedReduction = 0.5f; 
     private float defaultHeight;
     private Vector3 defaultCenter;
-    private Vector3 originalScale; // 记录初始的缩放比例
+    private Vector3 originalScale; 
 
     private Transform groundCheckPosition;
 
@@ -34,7 +34,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform cameraTransfrom;
     [SerializeField] private Transform playerBody;
 
-    private float xRotation = 0f; // 控制上下旋转
+
+    private float xRotation = 0f; 
     private bool canLook = false;
 
     private void Awake()
@@ -46,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         cameraTransfrom = GetComponentInChildren<Camera>().transform;
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        originalScale = transform.localScale; // 保存原始比例
+        originalScale = transform.localScale; 
     }
 
     private void OnEnable()
@@ -99,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
         float mouseY = playerInputActions.Player.Look.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -55f, 55f);
+        xRotation = Mathf.Clamp(xRotation, -60f, 60f);
 
         cameraTransfrom.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         playerBody.Rotate(Vector3.up * mouseX);
@@ -128,7 +129,8 @@ public class PlayerMovement : MonoBehaviour
 
         characterController.height = crouchHeight;
         characterController.center = defaultCenter;
-        transform.localScale = new Vector3(originalScale.x, crouchHeightMultiplier, originalScale.z); // 修改缩放比例
+        transform.localScale = new Vector3(originalScale.x, crouchHeightMultiplier, originalScale.z); 
+
         animator.SetBool("Crouch", true);
     }
 
@@ -138,7 +140,8 @@ public class PlayerMovement : MonoBehaviour
 
         characterController.height = defaultHeight;
         characterController.center = defaultCenter;
-        transform.localScale = originalScale; // 恢复到原始比例
+        transform.localScale = originalScale; 
+
         animator.SetBool("Crouch", false);
     }
 
@@ -215,6 +218,8 @@ public class PlayerMovement : MonoBehaviour
 
         Invoke(nameof(EnableLook), 0.2f);
     }
+
+
 
     private void SetDefaultCollisionBoxInfo()
     {
