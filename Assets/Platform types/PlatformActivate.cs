@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Platform : MonoBehaviour
+public class PlatformActivate : MonoBehaviour
 {
+    // Script for platforms that are activated on player contact
 
     public enum PlatformType
     {
+        Disable, // set to not use script
         Disappearing, // Sink very quickly
         Sinking, // Sink slowly
         Floating, // Sink upwards
-        Bouncy,
-        Moving,
     }
 
     [SerializeField] private PlatformType platformType; // Set this in the editor
@@ -47,12 +47,8 @@ public class Platform : MonoBehaviour
                 Invoke("Sink", activationDelay);
                 break;
 
-            case PlatformType.Bouncy:
+            case PlatformType.Disable:
                 break;
-
-            case PlatformType.Moving:
-                break;
-
         }
     }
 

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlatformTrigger : MonoBehaviour
 {
-    public Platform platform;
+    // Collider to activate platforms
+    public PlatformActivate platform;
 
     void OnTriggerEnter(Collider other){
         if (other.CompareTag("Player")){
